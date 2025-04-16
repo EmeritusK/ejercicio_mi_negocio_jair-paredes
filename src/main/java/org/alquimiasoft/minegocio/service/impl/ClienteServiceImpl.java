@@ -2,8 +2,11 @@
 package org.alquimiasoft.minegocio.service.impl;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 import org.alquimiasoft.minegocio.dto.ClienteDTO;
 import org.alquimiasoft.minegocio.dto.DireccionDTO;
@@ -60,9 +63,38 @@ public class ClienteServiceImpl implements ClienteService {
         clienteRepository.delete(cliente);
     }
 
-    @Override
-    public Page<ClienteDTO> buscarClientes(String filtro, Pageable pageable) {
-        return clienteRepository.buscarPorFiltro(filtro, pageable).map(mapper::toDto);
+@Override
+public Page<ClienteDTO> buscarClientes(String filtro, Pageable pageable) {
+    if (filtro == null || filtro.trim().isEmpty()) {
+        return clienteRepository.findAll(pageable).map(mapper::toDto);
     }
+
+    String[] palabras = filtro.toLowerCase().split("\\s+");
+
+    List<ClienteDTO> coincidencias = clienteRepository.findAll()
+        .stream()
+        .filter(cliente -> {
+            String campo = (cliente.getNombres() + " " + cliente.getNumeroIdentificacion()).toLowerCase();
+            return contieneTodasLasPalabras(campo, palabras);
+        })
+        .map(mapper::toDto)
+        .toList();
+
+    int start = (int) pageable.getOffset();
+    int end = Math.min((start + pageable.getPageSize()), coincidencias.size());
+
+    List<ClienteDTO> pagina = coincidencias.subList(start, end);
+    return new PageImpl<>(pagina, pageable, coincidencias.size());
+}
+
+private boolean contieneTodasLasPalabras(String texto, String[] palabras) {
+    for (String palabra : palabras) {
+        if (!texto.contains(palabra)) {
+            return false;
+        }
+    }
+    return true;
+}
+
 
 }
