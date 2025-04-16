@@ -1,0 +1,38 @@
+{
+	"info": {
+		"_postman_id": "37642e1c-a727-4b39-8fd1-a70ac194e315",
+		"name": "Direcciones",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "30541379",
+		"_collection_link": "https://www.postman.com/python-6832/workspace/minegocioejercicio/collection/30541379-37642e1c-a727-4b39-8fd1-a70ac194e315?action=share&source=collection_link&creator=30541379"
+	},
+	"item": [
+		{
+			"name": "CrearDireccionParaCliente",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"provincia\": \"Guayas\",\r\n  \"ciudad\": \"Guayaquil\",\r\n  \"direccion\": \"Av. 9 de Octubre\",\r\n  \"matriz\": false\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8081/api/clientes/direcciones/5"
+			},
+			"response": []
+		},
+		{
+			"name": "ObtenerDireccionesPorCliente",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8081/api/clientes/direcciones/5"
+			},
+			"response": []
+		}
+	]
+}
