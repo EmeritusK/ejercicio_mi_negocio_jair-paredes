@@ -40,6 +40,7 @@ public class DireccionServiceImpl implements DireccionService {
 
     @Override
     public List<DireccionDTO> obtenerDireccionesDeCliente(Long clienteId) {
+
         if (!clienteRepository.existsById(clienteId)) {
             throw new NotFoundException("Cliente no encontrado");
         }
