@@ -23,6 +23,10 @@ public ClienteDTO crearCliente(ClienteDTO dto) {
         throw new RuntimeException("Cliente ya existe");
     }
 
+    if (dto.getDirecciones() == null || dto.getDirecciones().isEmpty()) {
+        throw new RuntimeException("El cliente debe tener al menos una direccion");
+    }
+
     long direccionesMatriz = dto.getDirecciones() != null
         ? dto.getDirecciones().stream().filter(DireccionDTO::isMatriz).count()
         : 0;
@@ -30,6 +34,7 @@ public ClienteDTO crearCliente(ClienteDTO dto) {
     if (direccionesMatriz > 1) {
         throw new RuntimeException("Solo puede existir una direccion matriz");
     }
+    
 
     Cliente cliente = clienteMapper.toEntity(dto);
     return clienteMapper.toDto(clienteRepository.save(cliente));
