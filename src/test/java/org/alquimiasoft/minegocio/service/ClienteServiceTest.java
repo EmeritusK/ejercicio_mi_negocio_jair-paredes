@@ -100,4 +100,31 @@ public class ClienteServiceTest {
         verify(clienteRepository, never()).save(any());
     }
 
+    @Test
+void crearCliente_conDosDireccionesMatriz_lanzaExcepcion() {
+    // Arrange
+    ClienteDTO dto = ClienteDTO.builder()
+        .numeroIdentificacion("1234567890")
+        .tipoIdentificacion(TipoIdentificacion.CEDULA)
+        .nombres("Laura Méndez")
+        .correo("laura@mail.com")
+        .celular("0988111222")
+        .direcciones(List.of(
+            DireccionDTO.builder().provincia("Loja").ciudad("Loja").direccion("Calle 1").matriz(true).build(),
+            DireccionDTO.builder().provincia("Zamora").ciudad("Zamora").direccion("Av. Principal").matriz(true).build()
+        ))
+        .build();
+
+    when(clienteRepository.findByNumeroIdentificacion("1234567890"))
+        .thenReturn(Optional.empty());
+
+    // Act + Assert
+    Exception ex = assertThrows(RuntimeException.class, () ->
+        clienteService.crearCliente(dto)
+    );
+
+    assertEquals("Solo puede existir una dirección matriz", ex.getMessage());
+    verify(clienteRepository, never()).save(any());
+}
+
 }
