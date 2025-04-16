@@ -20,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import org.alquimiasoft.minegocio.dto.ClienteDTO;
 import org.alquimiasoft.minegocio.service.ClienteService;
 
+// SRP: Este controlador se limita a coordinar la entrada/salida de datos de clientes.
 @RestController
 @RequestMapping("/api/clientes")
 @RequiredArgsConstructor

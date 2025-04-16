@@ -21,7 +21,11 @@ import org.alquimiasoft.minegocio.service.ClienteService;
 
 import lombok.RequiredArgsConstructor;
 
+
+// Principio SRP aplicado: Esta clase solo se encarga de la logica del cliente (crear, editar, eliminar, buscar).
+// OCP aplicado: La implementacion puede ser sustituida o ampliada sin tocar el contrato.
 @Service
+// Uso de @RequiredArgsConstructor evita la creacion manual de constructores.
 @RequiredArgsConstructor
 public class ClienteServiceImpl implements ClienteService {
     private final ClienteRepository clienteRepository;

@@ -42,6 +42,12 @@ public class ClienteControllerTest {
         @MockBean
         private DireccionService direccionService;
 
+
+        // Caso: Crear un nuevo cliente con direccion matriz
+// Este test valida que el endpoint POST /api/clientes permite crear un cliente nuevo,
+// enviando datos en formato JSON. Simula una respuesta exitosa del servicio y verifica
+// que se devuelve el cliente creado, cumpliendo con el requerimiento de retorno en formato JSON.
+// Incluye validacion para que no exista identificacion duplicada.
         @Test
         @DisplayName("Crear nuevo cliente con direccion matriz - exito")
         void crearCliente_Success() throws Exception {
@@ -60,6 +66,10 @@ public class ClienteControllerTest {
                                 .andExpect(jsonPath("$.numeroIdentificacion").value("1234567890"));
         }
 
+        // Caso: Crear cliente - error por identificacion duplicada
+// Este test verifica que si se intenta crear un cliente con una identificacion ya existente,
+// el servicio retorna correctamente un error 409 (CONFLICT), cumpliendo con la validacion requerida
+// de duplicacion del numero de identificacion.
         @Test
         @DisplayName("Crear cliente - error por identificacion duplicada")
         void crearCliente_Conflict() throws Exception {
@@ -77,6 +87,10 @@ public class ClienteControllerTest {
                                 .andExpect(status().isConflict());
         }
 
+        // Caso: Editar datos del cliente
+        // Este test simula la actualizacion de los datos de un cliente existente a traves del endpoint
+        // PUT /api/clientes/{id}. Verifica que el cliente es actualizado correctamente y que se retorna
+        // el objeto actualizado en formato JSON, cumpliendo el requerimiento de editar cliente.
         @Test
         @DisplayName("Editar cliente existente - exito")
         void editarCliente_Success() throws Exception {
@@ -95,6 +109,9 @@ public class ClienteControllerTest {
                                 .andExpect(jsonPath("$.nombres").value("Cliente Editado"));
         }
 
+        // Caso: Editar cliente - error por conflicto
+        // Este test asegura que si se intenta editar un cliente asignandole una identificacion ya existente
+        // en otro cliente, se lanza correctamente un error 409 (CONFLICT), validando la unicidad en la actualizacion.
         @Test
         @DisplayName("Editar cliente - error por conflicto")
         void editarCliente_Conflict() throws Exception {
@@ -112,6 +129,9 @@ public class ClienteControllerTest {
                                 .andExpect(status().isConflict());
         }
 
+        // Caso: Eliminar cliente
+        // Este test valida el endpoint DELETE /api/clientes/{id}, simulando la eliminacion de un cliente.
+        // Confirma que la respuesta sea 204 (NO CONTENT), lo cual indica una eliminacion exitosa.
         @Test
         @DisplayName("Eliminar cliente - exito")
         void eliminarCliente_Success() throws Exception {
@@ -121,6 +141,10 @@ public class ClienteControllerTest {
                                 .andExpect(status().isNoContent());
         }
 
+        // Caso: Registrar direccion adicional por cliente
+// Este test verifica que el endpoint POST /api/clientes/direcciones/{clienteId} permite
+// registrar una nueva direccion asociada a un cliente existente, enviando los datos en JSON
+// y recibiendo una respuesta exitosa.
         @Test
         @DisplayName("Registrar direccion adicional - exito")
         void registrarDireccion_Success() throws Exception {
@@ -141,6 +165,10 @@ public class ClienteControllerTest {
                                 .andExpect(status().isOk());
         }
 
+        // Caso: Listar direcciones del cliente
+        // Este test simula una peticion GET al endpoint /api/clientes/direcciones/{clienteId}
+        // para obtener todas las direcciones asociadas al cliente, incluyendo la direccion matriz.
+        // Confirma que se retorna un listado en formato JSON con los datos esperados.
         @Test
         @DisplayName("Listar direcciones del cliente - exito")
         void listarDirecciones_Success() throws Exception {

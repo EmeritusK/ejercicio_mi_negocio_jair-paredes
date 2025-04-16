@@ -17,6 +17,7 @@ import org.alquimiasoft.minegocio.service.DireccionService;
 
 import lombok.RequiredArgsConstructor;
 
+// Principio SRP aplicado: Esta clase solo gestiona las direcciones, separando responsabilidades.
 @Service        
 @RequiredArgsConstructor
 public class DireccionServiceImpl implements DireccionService {
