@@ -3,6 +3,8 @@ package org.alquimiasoft.minegocio.dto;
 
 import java.util.List;
 
+import org.alquimiasoft.minegocio.enums.TipoIdentificacion;
+
 import lombok.Data;
 import lombok.Builder;
 import lombok.AllArgsConstructor;
@@ -15,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ClienteDTO {   
     private Long id;
-    private String tipoIdentificacion;
+    private TipoIdentificacion tipoIdentificacion;
     private String numeroIdentificacion;
     private String nombres;
     private String correo;
