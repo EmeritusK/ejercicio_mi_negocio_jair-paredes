@@ -18,6 +18,9 @@ import org.alquimiasoft.minegocio.dto.ClienteDTO;
 import org.alquimiasoft.minegocio.dto.DireccionDTO;
 import org.alquimiasoft.minegocio.entity.Cliente;
 import org.alquimiasoft.minegocio.enums.TipoIdentificacion;
+import org.alquimiasoft.minegocio.exception.ClientValidationException;
+import org.alquimiasoft.minegocio.exception.ConflictException;
+import org.alquimiasoft.minegocio.exception.MissingFieldsException;
 import org.alquimiasoft.minegocio.mapper.ClienteMapper;
 import org.alquimiasoft.minegocio.repository.ClienteRepository;
 import org.alquimiasoft.minegocio.service.impl.ClienteServiceImpl;
@@ -120,7 +123,7 @@ public class ClienteServiceTest {
                 when(clienteRepository.findByNumeroIdentificacion("1234567890"))
                                 .thenReturn(Optional.of(clienteExistente));
 
-                Exception exception = assertThrows(RuntimeException.class, () -> clienteService.crearCliente(dto));
+                Exception exception = assertThrows(ConflictException.class, () -> clienteService.crearCliente(dto));
 
                 assertEquals("Ya existe un cliente con esa identificacion", exception.getMessage());
                 verify(clienteRepository, never()).save(any());
@@ -144,7 +147,7 @@ public class ClienteServiceTest {
                 when(clienteRepository.findByNumeroIdentificacion("1234567890"))
                                 .thenReturn(Optional.empty());
 
-                Exception ex = assertThrows(RuntimeException.class, () -> clienteService.crearCliente(dto));
+                Exception ex = assertThrows(ClientValidationException.class, () -> clienteService.crearCliente(dto));
 
                 assertEquals("Solo puede existir una direccion matriz", ex.getMessage());
                 verify(clienteRepository, never()).save(any());
@@ -164,7 +167,7 @@ public class ClienteServiceTest {
                 when(clienteRepository.findByNumeroIdentificacion("1234567890"))
                                 .thenReturn(Optional.empty());
 
-                Exception exception = assertThrows(RuntimeException.class, () -> clienteService.crearCliente(dto));
+                Exception exception = assertThrows(MissingFieldsException.class, () -> clienteService.crearCliente(dto));
 
                 assertEquals("El cliente debe tener al menos una direccion", exception.getMessage());
                 verify(clienteRepository, never()).save(any());

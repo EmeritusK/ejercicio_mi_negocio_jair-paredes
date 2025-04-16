@@ -11,7 +11,9 @@ import java.util.List;
 import org.alquimiasoft.minegocio.dto.ClienteDTO;
 import org.alquimiasoft.minegocio.dto.DireccionDTO;
 import org.alquimiasoft.minegocio.entity.Cliente;
+import org.alquimiasoft.minegocio.exception.ClientValidationException;
 import org.alquimiasoft.minegocio.exception.ConflictException;
+import org.alquimiasoft.minegocio.exception.MissingFieldsException;
 import org.alquimiasoft.minegocio.exception.NotFoundException;
 import org.alquimiasoft.minegocio.mapper.ClienteMapper;
 import org.alquimiasoft.minegocio.repository.ClienteRepository;
@@ -28,15 +30,15 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public ClienteDTO crearCliente(ClienteDTO dto) {
         if (clienteRepository.findByNumeroIdentificacion(dto.getNumeroIdentificacion()).isPresent()) {
-            throw new RuntimeException("Ya existe un cliente con esa identificacion");
+            throw new ConflictException("Ya existe un cliente con esa identificacion");
         }
         if (dto.getDirecciones() == null || dto.getDirecciones().isEmpty()) {
-            throw new RuntimeException("El cliente debe tener al menos una direccion");
+            throw new MissingFieldsException("El cliente debe tener al menos una direccion");
         }
 
         long direccionesMatriz = dto.getDirecciones().stream().filter(DireccionDTO::isMatriz).count();
         if (direccionesMatriz > 1) {
-            throw new RuntimeException("Solo puede existir una direccion matriz");
+            throw new ClientValidationException("Solo puede existir una direccion matriz");
         }
 
         Cliente cliente = mapper.toEntity(dto);
