@@ -21,11 +21,12 @@ import org.alquimiasoft.minegocio.dto.ClienteDTO;
 import org.alquimiasoft.minegocio.service.ClienteService;
 
 // SRP: Este controlador se limita a coordinar la entrada/salida de datos de clientes.
+// DIP: El controlador depende de la abstraccion ClienteService, no de la clase concreta.
 @RestController
 @RequestMapping("/api/clientes")
 @RequiredArgsConstructor
 public class ClienteController {
-
+    // LSP aplicado: ClienteController depende de ClienteService, no de la implementacion concreta.
     private final ClienteService clienteService;
 
     @GetMapping

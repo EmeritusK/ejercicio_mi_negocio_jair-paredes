@@ -1,0 +1,90 @@
+{
+	"info": {
+		"_postman_id": "172d1277-239a-47cd-901e-1082855b691f",
+		"name": "Clientes",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "30541379",
+		"_collection_link": "https://www.postman.com/python-6832/workspace/minegocioejercicio/collection/30541379-172d1277-239a-47cd-901e-1082855b691f?action=share&source=collection_link&creator=30541379"
+	},
+	"item": [
+		{
+			"name": "CrearCliente",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "  {\r\n    \"tipoIdentificacion\": \"CEDULA\",\r\n    \"numeroIdentificacion\": \"1000000013\",\r\n    \"nombres\": \"Atuolfo Vera\",\r\n    \"correo\": \"jose2@mail.com\",\r\n    \"celular\": \"0982222222\",\r\n    \"direcciones\": [\r\n      {\r\n        \"provincia\": \"El Oro\",\r\n        \"ciudad\": \"Machala\",\r\n        \"direccion\": \"Av. Ferroviaria\",\r\n        \"matriz\": true\r\n      }\r\n    ]\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8081/api/clientes"
+			},
+			"response": []
+		},
+		{
+			"name": "EditarCliente",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"numeroIdentificacion\": \"1000000233\",\r\n  \"nombres\": \"Luis Perez Edit\",\r\n  \"correo\": \"luisalberto@mail.com\",\r\n  \"celular\": \"0998888888\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8081/api/clientes/6"
+			},
+			"response": []
+		},
+		{
+			"name": "ObtenerClientes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/clientes?page=0&size=2&filtro=",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"clientes"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "2"
+						},
+						{
+							"key": "filtro",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BorrarCliente",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:8081/api/clientes/1"
+			},
+			"response": []
+		}
+	]
+}
