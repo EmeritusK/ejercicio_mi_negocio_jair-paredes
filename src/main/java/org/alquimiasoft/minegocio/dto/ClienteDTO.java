@@ -1,22 +1,22 @@
-package org.alquimiasoft.minegocio.dto;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+package org.alquimiasoft.minegocio.dto;
 
 import java.util.List;
 
-import org.alquimiasoft.minegocio.enums.TipoIdentificacion;
-
-import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Builder;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class ClienteDTO {
+public class ClienteDTO {   
+    private Long id;
+    private String tipoIdentificacion;
     private String numeroIdentificacion;
-    private TipoIdentificacion tipoIdentificacion;
     private String nombres;
     private String correo;
     private String celular;

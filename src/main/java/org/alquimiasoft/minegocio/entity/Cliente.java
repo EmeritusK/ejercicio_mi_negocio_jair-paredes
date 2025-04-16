@@ -1,23 +1,42 @@
 package org.alquimiasoft.minegocio.entity;
 
-import org.alquimiasoft.minegocio.enums.TipoIdentificacion;
-import jakarta.persistence.*;
-import lombok.*;
+import java.util.List;
 
-@Getter
-@Setter
+import org.alquimiasoft.minegocio.enums.TipoIdentificacion;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.OneToMany;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class Cliente {
-    //solo los campos necesario para el TDD
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private TipoIdentificacion tipoIdentificacion;
+    // Usamos un enum para el tipo de identificacion para que solo pueod ingresar una de las dos indicadas en el ejercicio
+    @Enumerated(EnumType.STRING)
+    private TipoIdentificacion tipoIdentificacion; 
     private String numeroIdentificacion;
+
+    private String nombres;
+    private String correo;
+    private String celular;
+
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Direccion> direcciones;
 }

@@ -152,5 +152,32 @@ public class ClienteServiceTest {
         verify(clienteRepository, never()).save(any());
     }
 
+    @Test
+void buscarClientes_conFiltroYPagina_retornaResultados() {
+    // Arrange
+    PageRequest pageRequest = PageRequest.of(0, 2);
+    Page<Cliente> resultadoSimulado = new PageImpl<>(List.of(
+        Cliente.builder().id(1L).tipoIdentificacion(TipoIdentificacion.CEDULA).numeroIdentificacion("1234567890").nombres("Luis Perez").correo("luis@mail.com").celular("0999999999").build()
+    ));
+
+    when(clienteRepository.buscarPorFiltro(eq("lu"), eq(pageRequest))
+    ).thenReturn(resultadoSimulado);
+
+    when(clienteMapper.toDto(any(Cliente.class))).thenAnswer(invocation -> {
+        Cliente c = invocation.getArgument(0);
+        return ClienteDTO.builder()
+            .numeroIdentificacion(c.getNumeroIdentificacion())
+            .nombres(c.getNombres())
+            .build();
+    });
+
+    // Act
+    Page<ClienteDTO> pagina = clienteService.buscarClientes("lu", pageRequest);
+
+    // Assert
+    assertEquals(2, pagina.getContent().size());
+    assertEquals("Luis Perez", pagina.getContent().get(0).getNombres());
+    verify(clienteRepository).buscarPorFiltro("lu", pageRequest);
+}
 
 }
