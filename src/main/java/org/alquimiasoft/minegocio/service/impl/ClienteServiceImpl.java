@@ -51,15 +51,21 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public ClienteDTO editarCliente(Long id, ClienteDTO dto) {
         Cliente cliente = clienteRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Cliente no encontrado"));
+        .orElseThrow(() -> new NotFoundException("Cliente no encontrado"));
+        
+        if (dto.getNumeroIdentificacion() != null && clienteRepository.findByNumeroIdentificacion(dto.getNumeroIdentificacion()).isPresent()) {
+            throw new ConflictException("Ya existe un cliente con esa identificacion");
+        }
         cliente.setNombres(dto.getNombres());
         cliente.setCorreo(dto.getCorreo());
         cliente.setCelular(dto.getCelular());
+        cliente.setNumeroIdentificacion(dto.getNumeroIdentificacion());
         return mapper.toDto(clienteRepository.save(cliente));
     }
 
     @Override
     public void eliminarCliente(Long id) {
+
         Cliente cliente = clienteRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Cliente no encontrado"));
         clienteRepository.delete(cliente);
